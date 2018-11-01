@@ -1,0 +1,36 @@
+version: "2"
+services:
+  influxdb:
+    container_name: influxdb
+    image: influxdb:latest
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+    volumes:
+      - /home/core/volumes/influxdb:/var/lib/influxdb
+      - /home/core/conf/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf  
+    restart: always
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:5.0.3
+    ports:
+      - "3000:3000"
+    volumes: 
+      - /var/lib/grafana:/var/lib/grafana
+    links:
+      - influxdb
+    restart: always
+
+  chronograf:
+    container_name: chronograf
+    image: chronograf:1.4.2.1
+#    network_mode: "host"
+    ports: 
+      - "8888:8888"
+    links: 
+      - influxdb
+    volumes:
+#      - /home/core/conf/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+      - /var/lib/chronograf
+    restart: always
