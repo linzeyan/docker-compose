@@ -1,0 +1,20 @@
+version: "3"
+services:
+  confluence-online:
+    image: zeyanlin/confluence:online
+
+    volumes:
+      - /data/confluence/docker-confluence-home:/var/atlassian/application-data/confluence
+
+    ports:
+      - "7090:8090"
+      - "7091:8091"
+
+    environment:
+      - JVM_MINIMUM_MEMORY=8192m
+      - JVM_MAXIMUM_MEMORY=8192m
+      - CATALINA_CONNECTOR_PROXYNAME=confluence.example.com
+      - CATALINA_CONNECTOR_PROXYPORT=80
+      - CATALINA_CONNECTOR_SCHEME=http
+
+    restart: always
